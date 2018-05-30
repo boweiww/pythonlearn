@@ -1,0 +1,22 @@
+在python中可以自己定义新的类别，并赋予相应的功能。
+import collections
+
+Card = collections.namedtuple('Card', ['rank', 'suit'])
+
+class FrenchDeck:
+    ranks = [str(n) for n in range(2, 11)] + list('JQKA')
+    suits = 'spades diamonds clubs hearts'.split()
+
+    def __init__(self):
+        self._cards = [Card(rank, suit) for suit in self.suits
+                                        for rank in self.ranks]
+
+    def __len__(self):
+        return len(self._cards)
+
+    def __getitem__(self, position):
+        return self._cards[position]
+        
+定义了新的类别FrenchDeck, 其中，__len__和__getitem__ 使用了特殊方法
+例如，我们定义deck = FrenchDeck, 可以通过len(deck) 和 deck[x] 来得到对应的返回值
+事实上，deck[x] 调用的是deck.__getitem__(x),而len（deck）会调用 deck.__len__()
