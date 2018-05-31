@@ -20,3 +20,57 @@ class FrenchDeck:
 定义了新的类别FrenchDeck, 其中，__len__和__getitem__ 使用了特殊方法
 例如，我们定义deck = FrenchDeck, 可以通过len(deck) 和 deck[x] 来得到对应的返回值
 事实上，deck[x] 调用的是deck.__getitem__(x),而len（deck）会调用 deck.__len__()
+
+既然__getitem__存在，那么这一摞牌就是可以迭代的了
+也就是说：
+deck = FrenchDeck
+for card in deck:
+    print(card)
+这样可以显示每个卡片的信息
+或者反向迭代：
+for card in reversed(deck):
+    print(card)
+由于FrenchDeck集合没有__contains__方法，所以若要检测一个元素是否在集合中，in运算符会进行迭代搜索，即比较检测值和集合的每一项来确定。
+Card('Q', 'hearts') in deck
+True
+
+一般来说，诸如__len__(),__iter__()等特殊方法不需要直接被使用，只要使用对应的内置函数，如len,iter等等就可以了。
+
+自行定义新的二维向量类：
+
+from math import hypot
+class Vector:
+
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+    def __repr__(self):
+        return 'Vector(%r, %r)' % (self.x, self.y)
+
+    def __abs__(self):
+        return hypot(self.x, self.y)
+
+    def __bool__(self):
+        return bool(abs(self))
+
+    def __add__(self, other):
+        x = self.x + other.x
+        y = self.y + other.y
+        return Vector(x, y)
+
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar, self.y * scalar)
+
+由此定义，我们就可以使用这个类来进行简单的二维向量运算了。
+例如：
+a = Vector(1,2)
+b = Vector(3,4)
+print(a+b)
+Vector(4,6)
+
+在这里，__repr__是Vector的字符串表示，__abs__是vector向量的模，因为abs（）在对向量使用时，应该被认为是取模的运算。
+__repr__和__str__的区别在于，后者实在str（）或者print中被使用的，但是在__str__不存在时，解释器会用__repr__的返回值作为替代。
+注意，在这里，__mul__定义的是向量和常量之间的乘法。
+
+
+
